@@ -43,7 +43,7 @@ export default React.createClass({
     return (
       <div className={statusClass}>
       <div className="sidebar-download-btn-wrapper list-group">
-      <Link className={activeClass} to="/downloads/active">
+      <Link className={activeClass} to="/downloads/all">
       <div className="sidebar-btn-title">
       <span className="icon icon-download"></span>Downloads
       </div>

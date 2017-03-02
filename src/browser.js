@@ -11,8 +11,8 @@ app.on('ready', function(){
   var mainWindow = new BrowserWindow({
     'width': 1000,
     'height': 600,
-    'min-width': 1000,
-    'min-height': 600,
+    'minWidth': 1000,
+    'minHeight': 600,
     'resizable': true,
     'standard-window': false,
     // 'fullscreen': false,
