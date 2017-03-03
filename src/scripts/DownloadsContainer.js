@@ -37,17 +37,25 @@ export default React.createClass({
     let fragment, downloads;
     let page = Join('downloads-container');
     let group = this.props.params.group;
-    if(group === 'active'){
-      downloads = this.state.downloads.filter(item => {
-        return item.get('done') === false;
-      });
-      fragment = this.renderDownloads(group, downloads.toArray());
-    } else {
-      downloads = this.state.downloads.filter(item => {
-        return item.get('done') === true;
-      });
-      fragment = this.renderDownloads(group, downloads.toArray());
+
+    switch (group) {
+        case 'active':
+            downloads = this.state.downloads.filter(item => {
+                return item.get('done') === false;
+            });
+            break;
+        case 'complete':
+            downloads = this.state.downloads.filter(item => {
+                return item.get('done') === true;
+            });
+            break;
+        case 'all':
+        default:
+            downloads = this.state.downloads;
+            break;
     }
+    fragment = this.renderDownloads(group, downloads.toArray());
+
 
     return this.renderFragment(page, fragment);
   }
