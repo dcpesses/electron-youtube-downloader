@@ -9,6 +9,7 @@ import Utils from './Utils';
 import routes from './AppRoutes';
 import fs from 'fs';
 import Constants from './Constants';
+import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
 var ipc = electron.ipcRenderer;
 var remote = electron.remote;
@@ -16,6 +17,14 @@ let Menu = remote.Menu;
 let MenuTemplate = Utils.menu();
 let AppMenuTemplate = Menu.buildFromTemplate(MenuTemplate);
 Menu.setApplicationMenu(AppMenuTemplate);
+
+
+var installReactDevtools = null;
+
+if (process.env.NODE_ENV === 'development') {
+  // installReactDevtools = require('electron-react-devtools');
+  // installExtension = require('electron-devtools-installer');
+}
 
 function bootstrap(){
   Utils.inspect();
@@ -45,6 +54,14 @@ function bootstrap(){
     React.render(<Root params={params} />, mountNode);
   });
   RouterContainer.set(AppRouter);
+
+  if (process.env.NODE_ENV !== 'production') {
+    // installReactDevtools.inject();
+    // installReactDevtools.install();
+      installExtension(REACT_DEVELOPER_TOOLS)
+          .then((name) => console.log(`Added Extension:  ${name}`))
+          .catch((err) => console.log('An error occurred: ', err));
+  }
 
   // this.initVideoCache();
   let videoCache = remote.app.getPath('userData') + '/' + Constants.app.videoCacheFolder;

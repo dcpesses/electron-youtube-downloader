@@ -1,21 +1,26 @@
 'use strict';
 
 const {app, BrowserWindow, Menu, shell, ipc} = require('electron');
-// import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
 var fs = require('fs');
 var path = require('path');
 
-
 //require('crash-reporter').start();
+
+// var installExtension = null;
+
+// var installReactDevtools = null;
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
   const path = require('path'); // eslint-disable-line
   const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
+  console.log(p);
   require('module').globalPaths.push(p); // eslint-disable-line
-}
 
+  // installReactDevtools = require('electron-react-devtools');
+  // installExtension = require('electron-devtools-installer');
+}
 
 app.on('ready', function(){
   var mainWindow = new BrowserWindow({
@@ -65,6 +70,10 @@ app.on('ready', function(){
 
     //   mainWindow.openDevTools(); // already does this...?
 
+    // installExtensions();
+    // installReactDevtools.inject();
+    // installReactDevtools.install();
+
       mainWindow.webContents.on('context-menu', (e, props) => {
           const { x, y } = props;
 
@@ -75,12 +84,6 @@ app.on('ready', function(){
       });
 
 
-
-
-    //   installExtension(REACT_DEVELOPER_TOOLS)
-    //       .then((name) => console.log(`Added Extension:  ${name}`))
-    //       .catch((err) => console.log('An error occurred: ', err));
-
   }
 
 });
@@ -88,3 +91,10 @@ app.on('ready', function(){
 //   if (process.platform != 'darwin')
 //     app.quit();
 // });
+
+
+// const installExtensions = function () {
+//   // If you use some unusual devtools ext. You should specify its ID here.
+//   installExtension['default']( installExtension['REACT_DEVELOPER_TOOLS'] );
+//
+// }
