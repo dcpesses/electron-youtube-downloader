@@ -114,6 +114,16 @@ class Actions {
     });
   }
 
+  cache(item, filename) {
+    Ydm.cache(item, filename).then(data => {
+      if(data.ok){
+        this.actions.download(item, data.filename);
+      } else {
+        this.actions.cancel(item.id);
+      }
+    });
+  }
+
   cancel(id) {
     this.dispatch(id);
   }

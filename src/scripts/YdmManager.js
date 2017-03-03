@@ -7,7 +7,9 @@ import ytdl from 'ytdl-core';
 import sfx from 'sfx';
 import path from 'path';
 import fs from 'fs';
+import Constants from './Constants';
 
+const App = electron.remote.app;
 const Dialog = electron.remote.dialog;
 const Shell = electron.remote.shell;
 
@@ -26,6 +28,10 @@ export default {
 
   filepath(filename) {
     return this.home() + '/Desktop/' + filename + '.mp4';
+  },
+
+  cachepath(filename) {
+    return App.getPath('userData') + '/' + Constants.app.videoCacheFolder + (filename ? '/'+filename+'.mp4' : '');
   },
 
   verify(id) {
@@ -50,6 +56,30 @@ export default {
       }, function(filename){
           console.log(filename);
           if(filename !== undefined && item){
+            resolve({ok: true, filename: filename});
+          } else {
+            resolve({ok: false, filename: null});
+          }
+        });
+      });
+  },
+
+  cache(item) {
+    let self = this;
+
+    return new Promise(resolve => {
+      console.log(self.cachepath(item.snippet.title));
+      console.log(self.cachepath());
+      Dialog.showMessageBox({
+        title: 'Download',
+        message: 'Download video "' + item.snippet.title + '"?',
+        // message: self.filepath(item.snippet.title),
+        buttons: ['Cancel', 'OK'],
+        type: 'question'
+    }, function(value){
+          let filename = self.cachepath(item.snippet.title);
+          console.log(filename);
+          if(filename !== undefined && value === 1){
             resolve({ok: true, filename: filename});
           } else {
             resolve({ok: false, filename: null});

@@ -2,7 +2,7 @@
 
 export default {
   app: {
-
+    videoCacheFolder: 'VideoCache'
   },
 
   api: {

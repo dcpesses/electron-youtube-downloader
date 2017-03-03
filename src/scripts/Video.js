@@ -21,7 +21,8 @@ export default React.createClass({
 
   handleDownload(item){
     if(Actions.verify(item.id)){
-      Actions.prompt(item);
+    //   Actions.prompt(item);
+      Actions.cache(item);
     } else {
       Actions.duplicate(item).then(group => {
         this.transitionTo('downloads', {group: group});

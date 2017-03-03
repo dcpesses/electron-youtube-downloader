@@ -7,6 +7,8 @@ import Router from 'react-router';
 import RouterContainer from './Router';
 import Utils from './Utils';
 import routes from './AppRoutes';
+import fs from 'fs';
+import Constants from './Constants';
 
 var ipc = electron.ipcRenderer;
 var remote = electron.remote;
@@ -45,6 +47,14 @@ function bootstrap(){
   RouterContainer.set(AppRouter);
 }
 
+function initVideoCache(){
+    let videoCache = remote.app.getPath('userData') + '/' + Constants.app.videoCacheFolder;
+    if (!fs.existsSync(videoCache)) {
+        fs.mkdirSync(videoCache);
+    }
+
+}
+
 Promise.all([
   new Promise((resolve) => {
     if (window.addEventListener) {
@@ -53,4 +63,4 @@ Promise.all([
       window.attachEvent('onload', resolve);
     }
   })
-]).then(bootstrap);
+]).then(bootstrap).then(initVideoCache);

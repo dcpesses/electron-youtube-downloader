@@ -15,7 +15,7 @@ export default React.createClass({
   },
 
   renderClear(group, count) {
-    if(group !== 'active' && count > 0){
+    if(/*group !== 'active' &&*/ count > 0){
       return (
         <div className="downloads-clear">
           <a className="btn btn-sm btn-default" onClick={this.handleClear}>

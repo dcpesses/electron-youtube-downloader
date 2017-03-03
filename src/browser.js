@@ -1,11 +1,21 @@
 'use strict';
 
 const {app, BrowserWindow, Menu, shell, ipc} = require('electron');
+// import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
 var fs = require('fs');
 var path = require('path');
 
+
 //require('crash-reporter').start();
+
+if (process.env.NODE_ENV === 'development') {
+  require('electron-debug')(); // eslint-disable-line global-require
+  const path = require('path'); // eslint-disable-line
+  const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
+  require('module').globalPaths.push(p); // eslint-disable-line
+}
+
 
 app.on('ready', function(){
   var mainWindow = new BrowserWindow({
@@ -63,6 +73,13 @@ app.on('ready', function(){
               click() { mainWindow.inspectElement(x, y); }
           }]).popup(mainWindow);
       });
+
+
+
+
+    //   installExtension(REACT_DEVELOPER_TOOLS)
+    //       .then((name) => console.log(`Added Extension:  ${name}`))
+    //       .catch((err) => console.log('An error occurred: ', err));
 
   }
 

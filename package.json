@@ -22,6 +22,8 @@
     "babel": "^5.1.11",
     "bootstrap": "^3.3.4",
     "del": "^1.1.1",
+    "devtron": "^1.4.0",
+    "electron-devtools-installer": "^2.0.1",
     "gulp": "^3.8.11",
     "gulp-babel": "^5.1.0",
     "gulp-changed": "^1.2.1",
@@ -48,6 +50,7 @@
     "object-assign": "^2.0.0",
     "react": "^0.13.1",
     "react-router": "^0.13.2",
+    "request": "^2.79.0",
     "sfx": "^0.1.1",
     "ytdl-core": "^0.5.1"
   }
