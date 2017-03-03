@@ -4,6 +4,7 @@ import electron from 'electron'
 import router from './Router';
 
 const app = electron.remote.app;
+const shell = electron.remote.shell;
 
 export default {
   inspect() {
@@ -193,7 +194,7 @@ export default {
           {
             label: 'Report Issue or Suggest Feedback',
             click: function () {
-              electron.remote.require('shell').openExternal('https://github.com/whoisandie/yoda/issues/new');
+              shell.openExternal('https://github.com/whoisandie/yoda/issues/new');
             }
           }
         ]

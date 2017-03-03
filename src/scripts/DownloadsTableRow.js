@@ -31,7 +31,12 @@ export default React.createClass({
     this.setState({
       videoPath: filepath
     });
-},
+  },
+  handleDeleteDownload(e){
+    e.preventDefault();
+    let filepath = this.props.download.get('path');
+    Actions.delete(filepath);
+  },
 
   renderStatus() {
     if(this.props.download.get('start')){
@@ -71,6 +76,7 @@ export default React.createClass({
               <span>{this.handleShortenText(this.props.download.get('title'), 46)}</span>
               <span className="icon icon-youtube" onClick={this.handleViewInPlayer}></span>
               <span className="icon icon-open" onClick={this.handleOpenInFinder}></span>
+              <span className="icon icon-cancel" onClick={this.handleDeleteDownload}></span>
           </div>
           {this.renderPlayer(this.state.videoPath)}
         </td>

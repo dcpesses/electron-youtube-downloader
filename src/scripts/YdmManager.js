@@ -68,8 +68,8 @@ export default {
     let self = this;
 
     return new Promise(resolve => {
-      console.log(self.cachepath(item.snippet.title));
-      console.log(self.cachepath());
+      console.log(self.cachepath(item.id));
+      console.log(item);
       Dialog.showMessageBox({
         title: 'Download',
         message: 'Download video "' + item.snippet.title + '"?',
@@ -77,7 +77,7 @@ export default {
         buttons: ['Cancel', 'OK'],
         type: 'question'
     }, function(value){
-          let filename = self.cachepath(item.snippet.title);
+          let filename = self.cachepath(item.id);
           console.log(filename);
           if(filename !== undefined && value === 1){
             resolve({ok: true, filename: filename});
@@ -92,22 +92,50 @@ export default {
     let url = `http://youtube.com/watch?v=${video.id}`;
     let writeStream = fs.createWriteStream(filename);
     let readStream = ytdl(url, {});
-    readStream.pipe(writeStream);
-
-    let download = {
-      id: video.id,
-      title: video.snippet.title,
-      path: filename,
-      stream: readStream
-    };
 
     return new Promise((resolve, reject) => {
+      // error handler must be created before piping
       readStream.on('error', err => {
+        console.log(err);
+        Dialog.showMessageBox({
+          type: 'warning',
+          buttons: ['Ok'],
+          title: 'Error',
+          message: 'The video cannot be downloaded.'
+        });
         reject(err);
       });
 
+      readStream.pipe(writeStream);
+
+      let download = {
+        id: video.id,
+        title: video.snippet.title,
+        path: filename,
+        stream: readStream
+      };
+
       resolve(download);
     });
+  },
+
+  delete(item) {
+      let self = this;
+      let downloads = this.parse(localStorage.getItem('downloads'));
+      let video = downloads.find(download => {
+        return download.get('id') === item.id;
+      });
+
+      fs.unlink(item.path, err => {
+        console.log('unable to delete file');
+        console.log(err);
+        reject(err);
+      });
+
+      this.save('downloads', downloads.filter(download => {
+        return download.get('id') !== item.id;
+      }));
+
   },
 
   duplicate(item) {
@@ -172,6 +200,14 @@ export default {
     let downloads = this.parse(localStorage.getItem('downloads'));
     let ids = downloads.filter(download => download.get('done') === true)
                         .map(download => download.get('id'))
+    return Promise.resolve(ids);
+  },
+
+  remove(id) {
+    let downloads = this.parse(localStorage.getItem('downloads'));
+    let ids = downloads.filter(download => download.get('id') === id)
+                        .map(download => download.get('id'))
+    console.log(ids);
     return Promise.resolve(ids);
   },
 

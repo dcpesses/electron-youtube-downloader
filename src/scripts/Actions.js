@@ -157,6 +157,8 @@ class Actions {
   progress(video){
     let dataSize = 0;
     video.stream.on('info', (info, format) => {
+      console.log('info event');
+      console.log(info);
       let total = format.size;
       video.stream.on('data', data => {
         dataSize = dataSize + data.length;
@@ -169,7 +171,11 @@ class Actions {
         });
       });
     });
-
+    video.stream.on('error', (err) => {
+      console.log('ERROR!!');
+      this.actions.finish(video.id);
+      this.actions.delete(video.id);
+    });
     video.stream.on('end', () => {
       setTimeout(() => {
         this.actions.finish(video.id);
@@ -186,6 +192,15 @@ class Actions {
     this.actions.status();
     this.actions.snapshot();
     this.actions.notify();
+  }
+
+  delete(id) {
+    Ydm.remove(id).then(ids => {
+      console.log(ids);
+      this.actions.snapshot();
+      this.dispatch(ids);
+      this.actions.snapshot();
+    });
   }
 
   clear() {

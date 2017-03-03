@@ -45,6 +45,12 @@ function bootstrap(){
     React.render(<Root params={params} />, mountNode);
   });
   RouterContainer.set(AppRouter);
+
+  // this.initVideoCache();
+  let videoCache = remote.app.getPath('userData') + '/' + Constants.app.videoCacheFolder;
+  if (!fs.existsSync(videoCache)) {
+      fs.mkdirSync(videoCache);
+  }
 }
 
 function initVideoCache(){
@@ -63,4 +69,4 @@ Promise.all([
       window.attachEvent('onload', resolve);
     }
   })
-]).then(bootstrap).then(initVideoCache);
+]).then(bootstrap);
